@@ -1,0 +1,195 @@
+//#include <iostream>
+//#include <fstream>
+//#include <vector>
+//#include <list>
+//using namespace std;
+//
+//
+//
+//
+//void InOutList(vector< list<int> >& mylist) {
+//	for (int i = 0; i < mylist.size(); i++)
+//	{
+//		cout << i << ":";
+//		for (list<int>::iterator ip = mylist[i].begin(); ip != mylist[i].end();ip++)
+//		{
+//			cout << *ip << " ";
+//
+//		}
+//		cout << endl;
+//	}
+//
+//}
+//
+//int main() {
+//	int p = 0;
+//	//int count = 0;
+//	int numNodes, s, t;
+//	
+//	ifstream ifs;
+//
+//	//list<int> l;
+//
+
+//	ifs.open("C:\\Users\\GraphData.txt", std::ifstream::in);
+//	ifs >> numNodes;
+
+//	vector<list<int> >outlist(numNodes);
+//	vector<list<int> >inlist(numNodes);
+//	/*char c = ifs.get();*/
+//	/*ifs >> numNodes;
+//	while (ifs.good()){
+//		l.push_back(numNodes);
+//		ifs >> numNodes;
+//		
+//	}*/
+//	ifs >> s >> t;
+//	while (ifs.good())
+//	{
+//		outlist[s].push_back(t);
+//		inlist[t].push_back(s);
+//		ifs >> s >> t;
+//	}
+//
+//	cout << "*****************" << endl;
+//	//int temp = 0;
+//	/*for (list<int>::iterator ip=l.begin(); ip!=l.end();ip++, count++)
+//	{
+//		
+//		if (count ==0)
+//		{
+//			cout << *ip << endl;
+//		}
+//		else if (count%2 !=0) {
+//			temp = *ip;
+//		}
+//		else if (count%2==0)
+//		{
+//			cout << "Edge " << temp << " -> " << *ip << endl;
+//		}
+//		
+//	}*/
+//
+//	cout << "****** Out List ******" << endl;
+//	InOutList(outlist);
+//	
+//
+//	cout << "****** In List ******" << endl;
+//	InOutList(inlist);
+//	
+//
+//	ifs.close();
+//
+//
+//	cin >> p;
+//	return 0;
+//}
+
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <list>
+#include <string>
+using namespace std;
+
+
+void InOutList(vector< list<int> >& mylist) {
+	for (unsigned int i = 0; i < mylist.size(); i++)
+	{
+		cout << i << ":";
+		for (list<int>::iterator ip = mylist[i].begin(); ip != mylist[i].end();ip++)
+		{
+			cout << *ip << " ";
+
+		}
+		cout << endl;
+	}
+
+}
+
+void InOutDegree(vector< list<int> >& mylist) {
+	for (int i = 0; i < mylist.size(); i++)
+	{
+		vector< int > arr;
+
+		cout << i << ": ";
+		for (list<int>::iterator ip = mylist[i].begin(); ip != mylist[i].end();ip++)
+		{
+			arr.push_back(*ip);
+
+		}
+		cout << arr.size() << " ";
+		cout << endl;
+	}
+}
+
+class Graph {
+	vector< list<int> > outlist;
+	vector< list<int> > inlist;
+	int numNodes;
+
+public:
+	//boş graph. ctor.
+	Graph(int N) {
+		numNodes = N;
+		outlist.resize(N);
+		inlist.resize(N);
+	}
+
+	Graph(string fn) {
+		ReadFromFile(fn);
+	}
+	
+	void Print() {
+
+		cout << "****** Out List ******" << endl;
+		InOutList(outlist);
+
+		cout << "****** In List ******" << endl;
+		InOutList(inlist);
+
+
+		cout << "****** Out Degree ******" << endl;
+		InOutDegree(outlist);
+
+		cout << "****** In Degree ******" << endl;
+		InOutDegree(inlist);
+
+
+	}
+
+
+	void ReadFromFile(string fn) {
+		ifstream ifs;
+		int s, t;
+
+		ifs.open(fn, std::ifstream::in);
+		ifs >> numNodes;
+		inlist.resize(numNodes);
+		outlist.resize(numNodes);
+
+		ifs >> s >> t;
+		while (ifs.good()) {
+			outlist[s].push_back(t);
+			inlist[t].push_back(s);
+			ifs >> s >> t;
+		}
+		ifs.close();
+	}
+
+	
+};
+
+
+
+
+
+int main() {
+
+	Graph g("C:\\Users\\GraphData.txt");
+	g.Print();
+
+	return 0;
+}
